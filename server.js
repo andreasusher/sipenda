@@ -1,4 +1,6 @@
 require('dotenv').config();
+const dns = require('dns');
+dns.setServers(['1.1.1.1', '8.8.8.8']);
 const express = require('express');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
