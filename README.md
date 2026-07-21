@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Sipenda — Sistem Pengajuan Dosen Pembimbing Karya Akhir
 
 Aplikasi web untuk mengelola pengajuan dosen pembimbing karya akhir (skripsi/tugas akhir), dengan dua peran:
@@ -144,3 +145,6 @@ Aplikasi ini bisa di-deploy ke Railway, Render, Koyeb, Fly.io, atau VPS mana pun
 - Upload dokumen proposal (multer + penyimpanan cloud).
 - Riwayat/log setiap perubahan status pengajuan.
 - Endpoint API JSON terpisah bila ingin frontend SPA (React/Vue) di masa depan.
+=======
+# sipenda
+>>>>>>> c84831e9c0c6739b9a1e3d0b2a46c5e90a69b072
