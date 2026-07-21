@@ -1,0 +1,51 @@
+<div class="page-head">
+  <div>
+    <h2>Cari Dosen Pembimbing</h2>
+    <p>Lihat daftar dosen aktif beserta bidang keahlian dan kuota bimbingan sebelum mengajukan.</p>
+  </div>
+</div>
+
+<div class="card">
+  <form method="GET" action="/mahasiswa/cari-dosen" class="search-bar">
+    <div class="field">
+      <label for="q">Kata Kunci</label>
+      <input type="text" id="q" name="q" placeholder="Nama dosen, NIDN, atau bidang keahlian" value="<%= q %>">
+    </div>
+    <div class="field-actions">
+      <button class="btn btn-primary" type="submit">🔍 Cari</button>
+      <% if (q) { %><a class="btn btn-outline" href="/mahasiswa/cari-dosen">Reset</a><% } %>
+    </div>
+  </form>
+</div>
+
+<% if (dosenList.length === 0) { %>
+  <div class="card empty-state">
+    <h3>Tidak ada dosen ditemukan</h3>
+    <p><%= q ? 'Coba ubah kata kunci pencarian.' : 'Belum ada data dosen aktif.' %></p>
+  </div>
+<% } else { %>
+  <div class="card">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Nama</th>
+            <th>NIDN</th>
+            <th>Bidang Keahlian</th>
+            <th>Kuota Bimbingan</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% dosenList.forEach(d => { %>
+            <tr>
+              <td><%= d.nama %></td>
+              <td><%= d.nidn %></td>
+              <td><%= d.bidangKeahlian %></td>
+              <td><%= d.jumlahBimbinganAktif %> / <%= d.kuotaBimbingan %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<% } %>

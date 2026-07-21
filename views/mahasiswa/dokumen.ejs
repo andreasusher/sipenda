@@ -1,0 +1,67 @@
+<div class="page-head">
+  <div>
+    <h2>Upload Ulang Dokumen</h2>
+    <p>Pengajuan: <%= pengajuan.namaLengkap %> · <%= pengajuan.nim %></p>
+  </div>
+  <span class="badge badge-<%= pengajuan.status %>"><%= pengajuan.status %></span>
+</div>
+
+<div class="card" style="max-width:720px;">
+  <p class="hint" style="margin-bottom:18px;">
+    Anda hanya perlu mengunggah dokumen yang ingin diganti. Dokumen yang tidak dipilih ulang akan tetap memakai file yang sudah ada.
+  </p>
+
+  <form action="/mahasiswa/pengajuan/<%= pengajuan._id %>/dokumen" method="POST" enctype="multipart/form-data">
+
+    <label for="fileTranskripNilai">
+      Transkrip Nilai Sementara
+      <% if (!status.fileTranskripNilai.ada) { %>
+        <span class="badge badge-ditolak" style="margin-left:6px;">Hilang / tidak ditemukan</span>
+      <% } %>
+    </label>
+    <p class="hint">File saat ini: <%= status.fileTranskripNilai.originalName || '-' %></p>
+    <input type="file" id="fileTranskripNilai" name="fileTranskripNilai" accept=".pdf">
+    <p class="hint">Kosongkan jika tidak ingin mengganti. Format PDF, maks 10MB.</p>
+
+    <hr class="divider">
+
+    <label for="fileKrs">
+      Kartu Rencana Studi
+      <% if (!status.fileKrs.ada) { %>
+        <span class="badge badge-ditolak" style="margin-left:6px;">Hilang / tidak ditemukan</span>
+      <% } %>
+    </label>
+    <p class="hint">File saat ini: <%= status.fileKrs.originalName || '-' %></p>
+    <input type="file" id="fileKrs" name="fileKrs" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg">
+    <p class="hint">Kosongkan jika tidak ingin mengganti. Format PDF/dokumen/gambar, maks 10MB.</p>
+
+    <hr class="divider">
+
+    <label for="fileFormulirDosen">
+      Formulir Dosen Pembimbing
+      <% if (!status.fileFormulirDosen.ada) { %>
+        <span class="badge badge-ditolak" style="margin-left:6px;">Hilang / tidak ditemukan</span>
+      <% } %>
+    </label>
+    <p class="hint">File saat ini: <%= status.fileFormulirDosen.originalName || '-' %></p>
+    <input type="file" id="fileFormulirDosen" name="fileFormulirDosen" accept=".pdf,.doc,.docx">
+    <p class="hint">Kosongkan jika tidak ingin mengganti. Format PDF/dokumen, maks 10MB.</p>
+
+    <hr class="divider">
+
+    <label for="fileDraftProposal">
+      Draft Proposal
+      <% if (!status.fileDraftProposal.ada) { %>
+        <span class="badge badge-ditolak" style="margin-left:6px;">Hilang / tidak ditemukan</span>
+      <% } %>
+    </label>
+    <p class="hint">File saat ini: <%= status.fileDraftProposal.originalName || '-' %></p>
+    <input type="file" id="fileDraftProposal" name="fileDraftProposal" accept=".pdf,.doc,.docx">
+    <p class="hint">Kosongkan jika tidak ingin mengganti. Format PDF/dokumen, maks 10MB.</p>
+
+    <div style="margin-top:22px;display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn btn-gold" type="submit">Simpan Dokumen</button>
+      <a class="btn btn-outline" href="/mahasiswa/pengajuan/<%= pengajuan._id %>">Batal</a>
+    </div>
+  </form>
+</div>

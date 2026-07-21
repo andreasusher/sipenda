@@ -1,0 +1,58 @@
+<div class="page-head">
+  <div>
+    <h2><%= pengajuan.namaLengkap %></h2>
+    <p>Diajukan pada <%= pengajuan.createdAt.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) %></p>
+  </div>
+  <span class="badge badge-<%= pengajuan.status %>"><%= pengajuan.status %></span>
+</div>
+
+<div class="card">
+  <div class="detail-grid">
+    <div class="detail-item"><div class="k">NIM</div><div class="v"><%= pengajuan.nim %></div></div>
+    <div class="detail-item"><div class="k">Program Studi</div><div class="v"><%= pengajuan.prodi %></div></div>
+    <div class="detail-item"><div class="k">Jumlah SKS Lulus</div><div class="v"><%= pengajuan.jumlahSksLulus %></div></div>
+    <div class="detail-item"><div class="k">Jumlah SKS Diampu</div><div class="v"><%= pengajuan.jumlahSksDiampu %></div></div>
+  </div>
+
+  <hr class="divider">
+  <h3 style="font-size:15px;margin-bottom:12px;">Dokumen Terlampir</h3>
+  <div style="display:flex;flex-direction:column;gap:8px;">
+    <div>
+      <a class="btn btn-outline btn-sm" style="width:fit-content;" href="/files/<%= pengajuan._id %>/fileTranskripNilai">📄 Transkrip Nilai Sementara</a>
+      <% if (!status.fileTranskripNilai.ada) { %><span class="badge badge-ditolak" style="margin-left:6px;">Hilang</span><% } %>
+    </div>
+    <div>
+      <a class="btn btn-outline btn-sm" style="width:fit-content;" href="/files/<%= pengajuan._id %>/fileKrs">📄 Kartu Rencana Studi</a>
+      <% if (!status.fileKrs.ada) { %><span class="badge badge-ditolak" style="margin-left:6px;">Hilang</span><% } %>
+    </div>
+    <div>
+      <a class="btn btn-outline btn-sm" style="width:fit-content;" href="/files/<%= pengajuan._id %>/fileFormulirDosen">📄 Formulir Dosen Pembimbing</a>
+      <% if (!status.fileFormulirDosen.ada) { %><span class="badge badge-ditolak" style="margin-left:6px;">Hilang</span><% } %>
+    </div>
+    <div>
+      <a class="btn btn-outline btn-sm" style="width:fit-content;" href="/files/<%= pengajuan._id %>/fileDraftProposal">📄 Draft Proposal</a>
+      <% if (!status.fileDraftProposal.ada) { %><span class="badge badge-ditolak" style="margin-left:6px;">Hilang</span><% } %>
+    </div>
+  </div>
+
+  <% if (pengajuan.status === 'disetujui' && pengajuan.dosenDitetapkan) { %>
+    <hr class="divider">
+    <div class="detail-item">
+      <div class="k">Dosen Pembimbing Ditetapkan</div>
+      <div class="v" style="font-weight:700;color:var(--green-600);"><%= pengajuan.dosenDitetapkan.nama %></div>
+    </div>
+  <% } %>
+
+  <% if (pengajuan.catatanAdmin) { %>
+    <hr class="divider">
+    <div class="detail-item">
+      <div class="k">Catatan dari UPPS</div>
+      <div class="v"><%= pengajuan.catatanAdmin %></div>
+    </div>
+  <% } %>
+
+  <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;">
+    <a class="btn btn-outline btn-sm" href="/mahasiswa/dashboard">← Kembali</a>
+    <a class="btn btn-outline btn-sm" href="/mahasiswa/pengajuan/<%= pengajuan._id %>/dokumen">📤 Upload Ulang Dokumen</a>
+  </div>
+</div>

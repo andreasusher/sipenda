@@ -1,0 +1,83 @@
+<div class="page-head">
+  <div>
+    <h2>Pencarian Pengajuan</h2>
+    <p>Cari pengajuan berdasarkan nama mahasiswa, NIM, program studi, atau status.</p>
+  </div>
+</div>
+
+<div class="card">
+  <form method="GET" action="/upps/pencarian" class="search-bar">
+    <div class="field">
+      <label for="q">Kata Kunci</label>
+      <input type="text" id="q" name="q" placeholder="Nama atau NIM mahasiswa" value="<%= q %>">
+    </div>
+    <div class="field">
+      <label for="prodi">Program Studi</label>
+      <select id="prodi" name="prodi">
+        <option value="">Semua Prodi</option>
+        <option value="Desain Komunikasi Visual" <%= prodiFilter === 'Desain Komunikasi Visual' ? 'selected' : '' %>>Desain Komunikasi Visual</option>
+        <option value="Teknik Informatika" <%= prodiFilter === 'Teknik Informatika' ? 'selected' : '' %>>Teknik Informatika</option>
+        <option value="Desain Produk" <%= prodiFilter === 'Desain Produk' ? 'selected' : '' %>>Desain Produk</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="status">Status</label>
+      <select id="status" name="status">
+        <option value="">Semua Status</option>
+        <option value="pending" <%= statusFilter === 'pending' ? 'selected' : '' %>>Menunggu</option>
+        <option value="diproses" <%= statusFilter === 'diproses' ? 'selected' : '' %>>Diproses</option>
+        <option value="disetujui" <%= statusFilter === 'disetujui' ? 'selected' : '' %>>Disetujui</option>
+        <option value="ditolak" <%= statusFilter === 'ditolak' ? 'selected' : '' %>>Ditolak</option>
+      </select>
+    </div>
+    <div class="field-actions">
+      <button class="btn btn-primary" type="submit">🔍 Cari</button>
+      <a class="btn btn-outline" href="/upps/pencarian">Reset</a>
+    </div>
+  </form>
+</div>
+
+<% if (!hasCriteria) { %>
+  <div class="card empty-state">
+    <h3>Masukkan kata kunci untuk mulai mencari</h3>
+    <p>Gunakan nama, NIM, program studi, atau status untuk menemukan pengajuan tertentu.</p>
+  </div>
+<% } else if (results.length === 0) { %>
+  <div class="card empty-state">
+    <h3>Tidak ada hasil ditemukan</h3>
+    <p>Coba ubah kata kunci atau filter pencarian.</p>
+  </div>
+<% } else { %>
+  <div class="card">
+    <p class="hint" style="margin-bottom:14px;"><%= results.length %> hasil ditemukan.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Mahasiswa</th>
+            <th>Prodi</th>
+            <th>Dosen Ditetapkan</th>
+            <th>Status</th>
+            <th>Diajukan</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% results.forEach(p => { %>
+            <tr>
+              <td>
+                <strong><%= p.namaLengkap %></strong><br>
+                <span style="color:var(--ink-soft);font-size:12px;"><%= p.nim %></span>
+              </td>
+              <td><%= p.prodi %></td>
+              <td><%= p.dosenDitetapkan ? p.dosenDitetapkan.nama : '-' %></td>
+              <td><span class="badge badge-<%= p.status %>"><%= p.status %></span></td>
+              <td><%= p.createdAt.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) %></td>
+              <td><a class="btn btn-outline btn-sm" href="/upps/pengajuan/<%= p._id %>">Buka</a></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<% } %>

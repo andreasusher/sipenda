@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %> · Sipenda Karya Akhir</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<% if (typeof currentUser !== 'undefined' && currentUser) { %>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">SP</div>
+        <div class="brand-text">Sipenda<small>Karya Akhir</small></div>
+      </div>
+
+      <% if (currentUser.role === 'upps') { %>
+        <div class="nav-group">
+          <p class="nav-label">UPPS</p>
+          <a class="nav-link <%= typeof active !== 'undefined' && active === 'dashboard' ? 'active' : '' %>" href="/upps/dashboard">📋 <span>Daftar Pengajuan</span></a>
+          <a class="nav-link <%= typeof active !== 'undefined' && active === 'pencarian' ? 'active' : '' %>" href="/upps/pencarian">🔍 <span>Pencarian</span></a>
+          <a class="nav-link <%= typeof active !== 'undefined' && active === 'dosen' ? 'active' : '' %>" href="/upps/dosen">🎓 <span>Master Dosen</span></a>
+        </div>
+      <% } else { %>
+        <div class="nav-group">
+          <p class="nav-label">Mahasiswa</p>
+          <a class="nav-link <%= typeof active !== 'undefined' && active === 'dashboard' ? 'active' : '' %>" href="/mahasiswa/dashboard">📋 <span>Pengajuan Saya</span></a>
+          <a class="nav-link <%= typeof active !== 'undefined' && active === 'baru' ? 'active' : '' %>" href="/mahasiswa/pengajuan/baru">➕ <span>Ajukan Dosen</span></a>
+          <a class="nav-link <%= typeof active !== 'undefined' && active === 'cari-dosen' ? 'active' : '' %>" href="/mahasiswa/cari-dosen">🔍 <span>Cari Dosen</span></a>
+        </div>
+      <% } %>
+
+      <div class="sidebar-user">
+        <% if (currentUser.avatar) { %>
+          <img class="avatar" src="<%= currentUser.avatar %>" alt="">
+        <% } else { %>
+          <div class="avatar-fallback"><%= currentUser.name.charAt(0) %></div>
+        <% } %>
+        <div class="sidebar-user-info">
+          <strong><%= currentUser.name %></strong>
+          <span><%= currentUser.role === 'upps' ? 'Admin UPPS' : 'Mahasiswa' %></span>
+          <form action="/auth/logout" method="POST">
+            <button class="logout-btn" type="submit">Keluar</button>
+          </form>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <% if (success && success.length) { %><div class="flash flash-success"><%= success[0] %></div><% } %>
+      <% if (error && error.length) { %><div class="flash flash-error"><%= error[0] %></div><% } %>
+      <%- body %>
+    </main>
+  </div>
+<% } else { %>
+  <%- body %>
+<% } %>
+</body>
+</html>

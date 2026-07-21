@@ -1,0 +1,70 @@
+<div class="page-head">
+  <div>
+    <h2>Ajukan Dosen Pembimbing Karya Akhir</h2>
+    <p>Lengkapi data diri dan unggah seluruh dokumen yang diperlukan.</p>
+  </div>
+</div>
+
+<div class="card" style="max-width:720px;">
+  <form action="/mahasiswa/pengajuan" method="POST" enctype="multipart/form-data">
+
+    <label for="namaLengkap">Nama Lengkap</label>
+    <input type="text" id="namaLengkap" name="namaLengkap" value="<%= currentUser.name %>" required>
+
+    <label for="nim">NIM</label>
+    <input type="text" id="nim" name="nim" required>
+
+    <label>Program Studi</label>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:6px;">
+      <label style="display:flex;align-items:center;gap:8px;font-weight:400;margin:0;">
+        <input type="radio" name="prodi" value="Desain Komunikasi Visual" required style="width:auto;"> Desain Komunikasi Visual
+      </label>
+      <label style="display:flex;align-items:center;gap:8px;font-weight:400;margin:0;">
+        <input type="radio" name="prodi" value="Teknik Informatika" required style="width:auto;"> Teknik Informatika
+      </label>
+      <label style="display:flex;align-items:center;gap:8px;font-weight:400;margin:0;">
+        <input type="radio" name="prodi" value="Desain Produk" required style="width:auto;"> Desain Produk
+      </label>
+    </div>
+
+    <hr class="divider">
+
+    <label style="display:flex;align-items:center;gap:8px;font-weight:400;">
+      <input type="checkbox" name="konfirmasiTranskrip" required style="width:auto;">
+      Saya telah melakukan pemeriksaan transkrip dengan dosen Pembimbing Akademik, sebelum mengambil MK Karya Akhir *
+    </label>
+
+    <div class="form-row">
+      <div>
+        <label for="jumlahSksLulus">Jumlah SKS Lulus</label>
+        <input type="text" inputmode="numeric" id="jumlahSksLulus" name="jumlahSksLulus" required>
+      </div>
+      <div>
+        <label for="jumlahSksDiampu">Jumlah SKS yang Sedang Diampu</label>
+        <input type="text" inputmode="numeric" id="jumlahSksDiampu" name="jumlahSksDiampu" required>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <label for="fileTranskripNilai">Upload Transkrip Nilai Sementara</label>
+    <input type="file" id="fileTranskripNilai" name="fileTranskripNilai" accept=".pdf" required>
+    <p class="hint">1 file, format PDF, maks 10MB.</p>
+
+    <label for="fileKrs">Screenshot dan Upload Kartu Rencana Studi semester terbaru</label>
+    <input type="file" id="fileKrs" name="fileKrs" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" required>
+    <p class="hint">Pastikan sudah menginput MK Karya Akhir. Format PDF/dokumen/gambar, maks 10MB.</p>
+
+    <label for="fileFormulirDosen">Upload Formulir Dosen Pembimbing Karya Akhir</label>
+    <input type="file" id="fileFormulirDosen" name="fileFormulirDosen" accept=".pdf,.doc,.docx" required>
+    <p class="hint">Format PDF/dokumen, maks 10MB.</p>
+
+    <label for="fileDraftProposal">Draft Proposal sesuai judul/tema/topik yang diajukan</label>
+    <input type="file" id="fileDraftProposal" name="fileDraftProposal" accept=".pdf,.doc,.docx" required>
+    <p class="hint">Format PDF/dokumen, maks 10MB.</p>
+
+    <div style="margin-top:22px;">
+      <button class="btn btn-gold" type="submit">Kirim Pengajuan</button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,63 @@
+<div class="page-head">
+  <div>
+    <h2>Daftar Pengajuan</h2>
+    <p>Tinjau dan proses pengajuan dosen pembimbing karya akhir dari mahasiswa.</p>
+  </div>
+</div>
+
+<div class="summary-row">
+  <a href="/upps/dashboard" style="text-decoration:none;">
+    <div class="summary-card"><div class="num"><%= summary.total %></div><div class="lbl">Total</div></div>
+  </a>
+  <a href="/upps/dashboard?status=pending" style="text-decoration:none;">
+    <div class="summary-card"><div class="num"><%= summary.pending %></div><div class="lbl">Menunggu</div></div>
+  </a>
+  <a href="/upps/dashboard?status=diproses" style="text-decoration:none;">
+    <div class="summary-card"><div class="num"><%= summary.diproses %></div><div class="lbl">Diproses</div></div>
+  </a>
+  <a href="/upps/dashboard?status=disetujui" style="text-decoration:none;">
+    <div class="summary-card"><div class="num"><%= summary.disetujui %></div><div class="lbl">Disetujui</div></div>
+  </a>
+  <a href="/upps/dashboard?status=ditolak" style="text-decoration:none;">
+    <div class="summary-card"><div class="num"><%= summary.ditolak %></div><div class="lbl">Ditolak</div></div>
+  </a>
+</div>
+
+<% if (pengajuanList.length === 0) { %>
+  <div class="card empty-state">
+    <h3>Belum ada pengajuan<%= statusFilter ? ` dengan status "${statusFilter}"` : '' %></h3>
+    <p>Pengajuan dari mahasiswa akan muncul di sini.</p>
+  </div>
+<% } else { %>
+  <div class="card">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Mahasiswa</th>
+            <th>Prodi</th>
+            <th>SKS Lulus / Diampu</th>
+            <th>Status</th>
+            <th>Diajukan</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% pengajuanList.forEach(p => { %>
+            <tr>
+              <td>
+                <strong><%= p.namaLengkap %></strong><br>
+                <span style="color:var(--ink-soft);font-size:12px;"><%= p.nim %></span>
+              </td>
+              <td><%= p.prodi %></td>
+              <td><%= p.jumlahSksLulus %> / <%= p.jumlahSksDiampu %></td>
+              <td><span class="badge badge-<%= p.status %>"><%= p.status %></span></td>
+              <td><%= p.createdAt.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) %></td>
+              <td><a class="btn btn-outline btn-sm" href="/upps/pengajuan/<%= p._id %>">Proses</a></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<% } %>

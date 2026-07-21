@@ -1,0 +1,73 @@
+<div class="page-head">
+  <div>
+    <h2><%= pengajuan.namaLengkap %></h2>
+    <p><%= pengajuan.nim %> · <%= pengajuan.prodi %> · <%= pengajuan.mahasiswa.email %></p>
+  </div>
+  <span class="badge badge-<%= pengajuan.status %>"><%= pengajuan.status %></span>
+</div>
+
+<div class="card">
+  <div class="detail-grid">
+    <div class="detail-item">
+      <div class="k">Konfirmasi Cek Transkrip dengan Dosen PA</div>
+      <div class="v"><%= pengajuan.konfirmasiTranskrip ? 'Ya, sudah' : 'Belum dikonfirmasi' %></div>
+    </div>
+    <div class="detail-item">
+      <div class="k">SKS Lulus / Sedang Diampu</div>
+      <div class="v"><%= pengajuan.jumlahSksLulus %> / <%= pengajuan.jumlahSksDiampu %></div>
+    </div>
+  </div>
+
+  <hr class="divider">
+  <h3 style="font-size:15px;margin-bottom:12px;">Dokumen Terlampir</h3>
+  <div style="display:flex;flex-direction:column;gap:8px;">
+    <div>
+      <a class="btn btn-outline btn-sm" style="width:fit-content;" href="/files/<%= pengajuan._id %>/fileTranskripNilai" target="_blank">📄 Transkrip Nilai Sementara — <%= pengajuan.fileTranskripNilai.originalName %></a>
+      <% if (!status.fileTranskripNilai.ada) { %><span class="badge badge-ditolak" style="margin-left:6px;">Hilang di server</span><% } %>
+    </div>
+    <div>
+      <a class="btn btn-outline btn-sm" style="width:fit-content;" href="/files/<%= pengajuan._id %>/fileKrs" target="_blank">📄 Kartu Rencana Studi — <%= pengajuan.fileKrs.originalName %></a>
+      <% if (!status.fileKrs.ada) { %><span class="badge badge-ditolak" style="margin-left:6px;">Hilang di server</span><% } %>
+    </div>
+    <div>
+      <a class="btn btn-outline btn-sm" style="width:fit-content;" href="/files/<%= pengajuan._id %>/fileFormulirDosen" target="_blank">📄 Formulir Dosen Pembimbing — <%= pengajuan.fileFormulirDosen.originalName %></a>
+      <% if (!status.fileFormulirDosen.ada) { %><span class="badge badge-ditolak" style="margin-left:6px;">Hilang di server</span><% } %>
+    </div>
+    <div>
+      <a class="btn btn-outline btn-sm" style="width:fit-content;" href="/files/<%= pengajuan._id %>/fileDraftProposal" target="_blank">📄 Draft Proposal — <%= pengajuan.fileDraftProposal.originalName %></a>
+      <% if (!status.fileDraftProposal.ada) { %><span class="badge badge-ditolak" style="margin-left:6px;">Hilang di server</span><% } %>
+    </div>
+  </div>
+  <% if (!status.fileTranskripNilai.ada || !status.fileKrs.ada || !status.fileFormulirDosen.ada || !status.fileDraftProposal.ada) { %>
+    <p class="hint" style="margin-top:10px;color:var(--red-600);">
+      Ada dokumen yang hilang dari server. Minta mahasiswa membuka menu pengajuan mereka dan menggunakan tombol "Upload Ulang Dokumen".
+    </p>
+  <% } %>
+</div>
+
+<div class="card">
+  <h3 style="font-size:16px;margin-bottom:16px;">Proses Pengajuan</h3>
+  <form action="/upps/pengajuan/<%= pengajuan._id %>/proses" method="POST">
+    <label for="dosenDitetapkan">Tetapkan Dosen Pembimbing</label>
+    <select id="dosenDitetapkan" name="dosenDitetapkan">
+      <option value="">-- Pilih Dosen (lihat detail preferensi di Formulir Dosen Pembimbing) --</option>
+      <% dosenList.forEach(d => { %>
+        <option value="<%= d._id %>" <%= pengajuan.dosenDitetapkan && String(pengajuan.dosenDitetapkan._id) === String(d._id) ? 'selected' : '' %>>
+          <%= d.nama %> — <%= d.bidangKeahlian %> (aktif bimbingan: <%= d.jumlahBimbinganAktif %>/<%= d.kuotaBimbingan %>)
+        </option>
+      <% }) %>
+    </select>
+    <p class="hint">Wajib diisi jika keputusan adalah "Setujui". Rujuk ke dokumen "Formulir Dosen Pembimbing" untuk melihat preferensi dosen mahasiswa.</p>
+
+    <label for="catatanAdmin">Catatan untuk Mahasiswa (opsional)</label>
+    <textarea id="catatanAdmin" name="catatanAdmin"><%= pengajuan.catatanAdmin %></textarea>
+
+    <div style="margin-top:22px;display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn btn-gold" type="submit" name="keputusan" value="setujui">✓ Setujui</button>
+      <button class="btn btn-outline" type="submit" name="keputusan" value="proses">↻ Tandai Diproses</button>
+      <button class="btn btn-danger" type="submit" name="keputusan" value="tolak">✕ Tolak</button>
+    </div>
+  </form>
+</div>
+
+<a class="btn btn-outline btn-sm" href="/upps/dashboard">← Kembali ke Daftar</a>

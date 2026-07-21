@@ -1,0 +1,85 @@
+<div class="page-head">
+  <div>
+    <h2>Master Data Dosen</h2>
+    <p>Kelola daftar dosen yang tersedia sebagai pembimbing karya akhir.</p>
+  </div>
+</div>
+
+<div class="card">
+  <h3 style="font-size:15px;margin-bottom:14px;">
+    <%= editingDosen ? `Edit Dosen: ${editingDosen.nama}` : 'Tambah Dosen' %>
+  </h3>
+  <form action="<%= editingDosen ? `/upps/dosen/${editingDosen._id}/edit` : '/upps/dosen' %>" method="POST">
+    <div class="form-row">
+      <div>
+        <label for="nama">Nama Dosen</label>
+        <input type="text" id="nama" name="nama" value="<%= editingDosen ? editingDosen.nama : '' %>" required>
+      </div>
+      <div>
+        <label for="nidn">NIDN</label>
+        <input type="text" id="nidn" name="nidn" value="<%= editingDosen ? editingDosen.nidn : '' %>" required>
+      </div>
+    </div>
+    <div class="form-row">
+      <div>
+        <label for="bidangKeahlian">Bidang Keahlian</label>
+        <input type="text" id="bidangKeahlian" name="bidangKeahlian" value="<%= editingDosen ? editingDosen.bidangKeahlian : '' %>" required>
+      </div>
+      <div>
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" value="<%= editingDosen ? editingDosen.email : '' %>">
+      </div>
+    </div>
+    <label for="kuotaBimbingan">Kuota Bimbingan</label>
+    <input type="text" id="kuotaBimbingan" name="kuotaBimbingan" value="<%= editingDosen ? editingDosen.kuotaBimbingan : '10' %>" style="max-width:140px;">
+
+    <div style="margin-top:18px;display:flex;gap:10px;">
+      <button class="btn btn-primary" type="submit"><%= editingDosen ? 'Simpan Perubahan' : 'Tambah Dosen' %></button>
+      <% if (editingDosen) { %>
+        <a class="btn btn-outline" href="/upps/dosen">Batal</a>
+      <% } %>
+    </div>
+  </form>
+</div>
+
+<div class="card">
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Nama</th>
+          <th>NIDN</th>
+          <th>Bidang Keahlian</th>
+          <th>Bimbingan Aktif</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% dosenList.forEach(d => { %>
+          <tr>
+            <td><%= d.nama %></td>
+            <td><%= d.nidn %></td>
+            <td><%= d.bidangKeahlian %></td>
+            <td><%= d.jumlahBimbinganAktif %> / <%= d.kuotaBimbingan %></td>
+            <td>
+              <span class="badge <%= d.aktif ? 'badge-disetujui' : 'badge-ditolak' %>"><%= d.aktif ? 'Aktif' : 'Nonaktif' %></span>
+            </td>
+            <td style="display:flex;gap:6px;flex-wrap:wrap;">
+              <a class="btn btn-outline btn-sm" href="/upps/dosen/<%= d._id %>/edit">Edit</a>
+              <form action="/upps/dosen/<%= d._id %>/toggle" method="POST">
+                <button class="btn btn-outline btn-sm" type="submit"><%= d.aktif ? 'Nonaktifkan' : 'Aktifkan' %></button>
+              </form>
+              <form action="/upps/dosen/<%= d._id %>/delete" method="POST" onsubmit="return confirm('Hapus dosen ini?');">
+                <button class="btn btn-danger btn-sm" type="submit">Hapus</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+        <% if (dosenList.length === 0) { %>
+          <tr><td colspan="6" style="text-align:center;color:var(--ink-soft);padding:30px;">Belum ada data dosen.</td></tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>
